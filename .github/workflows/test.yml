@@ -1,0 +1,43 @@
+name: Run tests
+
+on: [ push, pull_request ]
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup repo
+        uses: ./.github/actions/base
+
+      - name: Run tests
+        run: |
+          pnpm test
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup repo
+        uses: ./.github/actions/base
+
+      - name: Run tests
+        run: |
+          pnpm test:e2e
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup repo
+        uses: ./.github/actions/base
+
+      - name: Run coverage
+        uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+          output: report-markdown
+          test-script: pnpm test:cov

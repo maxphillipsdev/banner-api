@@ -1,10 +1,6 @@
 name: Lint and Format
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: [ push, pull_request ]
 
 jobs:
   eslint:
@@ -17,7 +13,8 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - uses: ./.github/actions/base
+      - name: Setup repo
+        uses: ./.github/actions/base
 
       - name: Run ESLint
         run: |
@@ -34,7 +31,11 @@ jobs:
     permissions:
       contents: read
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
       - name: Setup repo
         uses: ./.github/actions/base
+
       - name: Run formatter
         run: pnpm format
