@@ -45,6 +45,7 @@ jobs:
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           package-manager: pnpm
+          output: report-markdown
 
       - name: Post coverage to PR
         uses: marocchino/sticky-pull-request-comment@v2
