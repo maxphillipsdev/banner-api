@@ -43,5 +43,5 @@ jobs:
       - name: Run coverage
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
-          output: report-markdown
+          output: comment, report-markdown
           package-manager: pnpm
