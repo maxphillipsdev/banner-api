@@ -1,6 +1,10 @@
 name: Run tests
 
-on: [ push, pull_request ]
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   unit:
@@ -40,4 +44,4 @@ jobs:
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           output: report-markdown
-          test-script: pnpm test:cov
+          package-manager: pnpm
