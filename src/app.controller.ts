@@ -16,7 +16,15 @@ export class AppController {
     const template = compile(templateString);
 
     const renderedTemplate = template({
-      text: 'sheesh',
+      colors: {
+        primary: '#E93D82',
+        secondary: '#FEECF4',
+        bg: '#151718',
+      },
+      text: {
+        primary: '~/maxphillipsdev',
+        secondary: '/dotfiles',
+      },
     });
 
     res.send(renderedTemplate);
