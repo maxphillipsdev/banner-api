@@ -6,7 +6,7 @@ import { CreateBannerDto } from 'src/dtos/banner.dto';
 
 @Injectable()
 export class BannerService {
-  private readonly defaultParams: CreateBannerDto = {
+  readonly defaultParams: CreateBannerDto = {
     primaryColor: '#E93D82',
     secondaryColor: '#FEECF4',
     bgColor: '#151718',
@@ -14,16 +14,19 @@ export class BannerService {
     secondaryText: '/banner-api',
   };
 
-  async render(params: CreateBannerDto): Promise<string> {
+  async buildTemplate(): Promise<HandlebarsTemplateDelegate> {
     const templateString = await readFile(
       join(__dirname, 'template.hbs'),
       'utf-8',
     );
 
-    const template = compile(templateString);
-    return template({
-      ...this.defaultParams,
+    return compile(templateString);
+  }
+
+  buildParams(defaultParams: CreateBannerDto, params: CreateBannerDto) {
+    return {
+      ...defaultParams,
       ...params,
-    });
+    };
   }
 }

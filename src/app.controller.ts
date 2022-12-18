@@ -9,7 +9,11 @@ export class AppController {
 
   @Get('/')
   async renderBanner(@Res() res: Response, @Query() queries: CreateBannerDto) {
-    const renderedTemplate = await this.bannerService.render(queries);
-    res.send(renderedTemplate);
+    const template = await this.bannerService.buildTemplate();
+    const params = this.bannerService.buildParams(
+      this.bannerService.defaultParams,
+      queries,
+    );
+    res.send(template(params));
   }
 }

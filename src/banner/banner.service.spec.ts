@@ -15,4 +15,6 @@ describe('BannerService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it('should return a rendered template', async () => {});
 });
