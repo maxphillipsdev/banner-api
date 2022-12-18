@@ -16,5 +16,13 @@ describe('BannerService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should return a rendered template', async () => {});
+  describe('buildTemplate', () => {
+    it.todo('should return a valid template');
+  });
+
+  describe('buildParams', () => {
+    it.todo('should return params without anything overriden');
+
+    it.todo('should return params with correct values overriden');
+  });
 });
