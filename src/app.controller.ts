@@ -1,32 +1,15 @@
-import { Controller, Get, Res } from '@nestjs/common';
-import { compile } from 'handlebars';
+import { Controller, Get, Query, Res } from '@nestjs/common';
 import { Response } from 'express';
-import { readFile } from 'fs/promises';
-import { join } from 'path';
+import { BannerService } from './banner/banner.service';
+import { CreateBannerDto } from './dtos/banner.dto';
 
 @Controller()
 export class AppController {
+  constructor(private bannerService: BannerService) {}
+
   @Get('/')
-  async renderTemplate(@Res() res: Response) {
-    const templateString = await readFile(
-      join(__dirname, 'template.hbs'),
-      'utf-8',
-    );
-
-    const template = compile(templateString);
-
-    const renderedTemplate = template({
-      colors: {
-        primary: '#E93D82',
-        secondary: '#FEECF4',
-        bg: '#151718',
-      },
-      text: {
-        primary: '~/maxphillipsdev',
-        secondary: '/dotfiles',
-      },
-    });
-
+  async renderBanner(@Res() res: Response, @Query() queries: CreateBannerDto) {
+    const renderedTemplate = await this.bannerService.render(queries);
     res.send(renderedTemplate);
   }
 }
