@@ -1,0 +1,53 @@
+name: Run tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup repo
+        uses: ./.github/actions/base
+
+      - name: Run tests
+        run: |
+          pnpm test
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup repo
+        uses: ./.github/actions/base
+
+      - name: Run tests
+        run: |
+          pnpm test:e2e
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup repo
+        uses: ./.github/actions/base
+
+      - name: Run coverage
+        id: coverage
+        uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+          package-manager: pnpm
+          output: report-markdown
+
+      - name: Post coverage to PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+            message: ${{ steps.coverage.outputs.report }}
