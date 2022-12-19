@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { readFile } from 'fs/promises';
-import { compile } from 'handlebars';
 import { join } from 'path';
 import { CreateBannerDto } from 'src/dtos/banner.dto';
 
@@ -14,13 +13,8 @@ export class BannerService {
     secondaryText: '/banner-api',
   };
 
-  async buildTemplate(): Promise<HandlebarsTemplateDelegate> {
-    const templateString = await readFile(
-      join(__dirname, 'template.hbs'),
-      'utf-8',
-    );
-
-    return compile(templateString);
+  async buildTemplate(): Promise<string> {
+    return await readFile(join(__dirname, 'template.hbs'), 'utf-8');
   }
 
   buildParams(defaultParams: CreateBannerDto, params: CreateBannerDto) {

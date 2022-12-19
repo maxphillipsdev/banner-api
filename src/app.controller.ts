@@ -1,5 +1,6 @@
 import { Controller, Get, Query, Res } from '@nestjs/common';
 import { Response } from 'express';
+import { compile } from 'handlebars';
 import { BannerService } from './banner/banner.service';
 import { CreateBannerDto } from './dtos/banner.dto';
 
@@ -10,10 +11,11 @@ export class AppController {
   @Get('/')
   async renderBanner(@Res() res: Response, @Query() queries: CreateBannerDto) {
     const template = await this.bannerService.buildTemplate();
+    const compiledTemplate = compile(template);
     const params = this.bannerService.buildParams(
       this.bannerService.defaultParams,
       queries,
     );
-    res.send(template(params));
+    res.send(compiledTemplate(params));
   }
 }
