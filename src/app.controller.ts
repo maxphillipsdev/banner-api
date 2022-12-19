@@ -1,12 +1,21 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get, Query, Res } from '@nestjs/common';
+import { Response } from 'express';
+import { compile } from 'handlebars';
+import { BannerService } from './banner/banner.service';
+import { CreateBannerDto } from './dtos/banner.dto';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private bannerService: BannerService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get('/')
+  async renderBanner(@Res() res: Response, @Query() queries: CreateBannerDto) {
+    const template = await this.bannerService.buildTemplate();
+    const compiledTemplate = compile(template);
+    const params = this.bannerService.buildParams(
+      this.bannerService.defaultParams,
+      queries,
+    );
+    res.send(compiledTemplate(params));
   }
 }
