@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
+import puppeteer from 'puppeteer';
 import { CreateBannerDto } from 'src/dtos/banner.dto';
 
 @Injectable()
@@ -22,5 +23,21 @@ export class BannerService {
       ...defaultParams,
       ...params,
     };
+  }
+
+  async getScreenshotFromTemplate(template: string): Promise<string | Buffer> {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+
+    await page.setViewport({
+      width: 1280,
+      height: 640,
+    });
+    await page.setContent(template);
+
+    await page.evaluateHandle('document.fonts.ready');
+    const screenshot = await page.screenshot();
+    await browser.close();
+    return screenshot;
   }
 }
