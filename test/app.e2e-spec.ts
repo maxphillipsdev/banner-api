@@ -15,7 +15,15 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer()).get('/').expect(200);
+  describe('/ (GET)', () => {
+    it('should return 200 when called without parameters', () => {
+      return request(app.getHttpServer()).get('/').expect(200);
+    });
+
+    it('should return the correct MIME-type', () => {
+      return request(app.getHttpServer())
+        .get('/')
+        .expect('Content-Type', 'image/png');
+    });
   });
 });

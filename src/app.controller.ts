@@ -10,12 +10,19 @@ export class AppController {
 
   @Get('/')
   async renderBanner(@Res() res: Response, @Query() queries: CreateBannerDto) {
-    const template = await this.bannerService.buildTemplate();
-    const compiledTemplate = compile(template);
+    const template = compile(await this.bannerService.buildTemplate());
+
     const params = this.bannerService.buildParams(
       this.bannerService.defaultParams,
       queries,
     );
-    res.send(compiledTemplate(params));
+
+    const renderedTemplate = template(params);
+    const screenshot = await this.bannerService.getScreenshotFromTemplate(
+      renderedTemplate,
+    );
+
+    res.setHeader('Content-Type', 'image/png');
+    res.send(screenshot);
   }
 }
