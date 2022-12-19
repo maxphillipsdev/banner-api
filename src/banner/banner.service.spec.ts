@@ -36,4 +36,8 @@ describe('BannerService', () => {
       expect(template).toEqual(MOCK_TEMPLATE);
     });
   });
+
+  describe('takeScreenshot', () => {
+    it.todo('should call page.screenshot()');
+  });
 });
