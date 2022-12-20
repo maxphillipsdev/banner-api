@@ -26,7 +26,9 @@ export class BannerService {
   }
 
   async getScreenshotFromTemplate(template: string): Promise<string | Buffer> {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      headless: true,
+    });
     const page = await browser.newPage();
 
     await page.setViewport({
